@@ -1,0 +1,6 @@
+// the `staff` variable is available from spike-records for our initial static
+// render, and we pass it in explicitly in later dynamic renders
+each(loop='employee of staff[page]')
+  li
+    img(src='{{ employee.media_avatar_svg }}')
+    .name {{ employee.name }}

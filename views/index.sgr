@@ -1,0 +1,14 @@
+extends(src='layout.sgr')
+  block(name='content')
+    h1 Employee List
+    ul
+      // we keep it DRY by using the same template for the initial static
+      // render, and for later dynamic renders
+      include(src='templates/page.sgr')
+
+    button.prev Previous Page
+    button.next Next Page
+
+    script.
+      // this makes the staff available to javascript
+      self.staff = {{{ JSON.stringify(staff) }}}
