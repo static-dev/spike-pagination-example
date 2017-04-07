@@ -1,6 +1,6 @@
 const htmlStandards = require('reshape-standard')
 const cssStandards = require('spike-css-standards')
-const jsStandards = require('babel-preset-latest')
+const jsStandards = require('spike-js-standards')
 const pageId = require('spike-page-id')
 const Records = require('spike-records')
 
@@ -15,23 +15,22 @@ module.exports = {
   },
   // make sure to ignore the templates, as they should not be compiled as static
   ignore: ['**/layout.sgr', '**/_*', '**/.*', '_cache/**', '**/templates/**', 'readme.md'],
-  reshape: (ctx) => {
-    return htmlStandards({
-      webpack: ctx,
-      locals: Object.assign(locals, { pageId: pageId(ctx) })
-    })
-  },
-  postcss: (ctx) => {
-    return cssStandards({ webpack: ctx })
-  },
+  reshape: htmlStandards({
+    locals: (ctx) => Object.assign(locals, { pageId: pageId(ctx) })
+  }),
+  postcss: cssStandards(),
   // here we configure the reshape loader to be able to access client-side
-  // templates through the `locals=false` option
+  // templates through the `locals: false` option
   module: {
-    loaders: [
-      { test: /templates\/.*\.sgr$/, loader: 'reshape?locals=false' }
-    ]
+    rules: [{
+      test: /templates\/.*\.sgr$/,
+      use: [{
+        loader: 'reshape-loader',
+        options: htmlStandards({ locals: false })
+      }]
+    }]
   },
-  babel: { presets: [jsStandards] },
+  babel: jsStandards,
   plugins: [
     // pull in carrot staff data and split into pages via a reduce function
     new Records({

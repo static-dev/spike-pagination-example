@@ -11,7 +11,7 @@ let currentPage = 0
 // next/prev buttons simply increment `currentPage` and re-render the list
 $('.next').addEventListener('click', () => {
   if (currentPage === staff.length) return
-  renderPage(currentPage++)
+  renderPage(++currentPage)
 })
 
 $('.prev').addEventListener('click', () => {
